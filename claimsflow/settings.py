@@ -38,10 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     # 'claimsflow',
     'organization',
     'patient',
     'payment',
+    'user',
+    'claim',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'claimsflow.wsgi.application'
 
-# AUTH_USER_MODEL = 'patient.Patient'
+AUTH_USER_MODEL = 'user.User'
 
 
 # Database
@@ -128,3 +132,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':['rest_framework.authentication.SessionAuthentication'],
+    'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_FILTER_BACKENDS':['django_filters.rest_framework.DjangoFilterBackend',
+                               'rest_framework.filters.SearchFilter',
+                               'rest_framework.filters.OrderingFilter'
+                               ],
+}

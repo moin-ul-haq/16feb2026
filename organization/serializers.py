@@ -1,28 +1,29 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User
 
-class OrganizationSerializer(ModelSerializer):
+class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Organization
         fields = '__all__'
 
 
-class ProcedureSerializer(ModelSerializer):
+class ProcedureSerializer(serializers.ModelSerializer):
+    # practice = serializers.PrimaryKeyRelatedField(queryset = Practice.objects.all())
+    practice_name = serializers.StringRelatedField(source = 'practice.name')
+    organization = serializers.StringRelatedField(source = 'practice.organization.name')
     class Meta:
         model=Procedure
-        fields = '__all__'
+        fields = ['id','name','cost','practice','practice_name','organization']
+        # fields = '__all__'
 
 
-class PracticeSerializer(ModelSerializer):
+
+class PracticeSerializer(serializers.ModelSerializer):
+    organization_name = serializers.StringRelatedField(source = 'organization.name')
+    procedure = ProcedureSerializer(many=True)
     class Meta:
         model=Practice
-        fields = '__all__'
+        fields = ['id','name','location','organization','organization_name','procedure']
 
 
-
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model= User
-        # fields = '__all__'
-        fields = ['first_name','last_name','password','email','username']

@@ -5,5 +5,7 @@ from .models import *
 # Register your models here.
 
 
-admin.site.register(Patient)
-admin.site.register(Claim)
+
+@admin.register(Patient)
+class StudentAdmin(admin.ModelAdmin):
+    list_display=['id','name','organization']

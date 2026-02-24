@@ -1,7 +1,10 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import *
 
-class PaymentSerializer(ModelSerializer):
+class PaymentSerializer(serializers.ModelSerializer):
+    # claim = serializers.StringRelatedField()
+    practice = serializers.StringRelatedField(source = 'claim.practice')
+    patient = serializers.StringRelatedField(source = 'claim.patient')
     class Meta:
         model=Payment
-        fields = '__all__'
+        fields = ['id','patient','amount','claim','practice','status']
